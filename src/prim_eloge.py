@@ -82,8 +82,15 @@ def prim(graph: Graph) -> list[Edge]:
     # faster, but it won't be a problem if you add them. They will be
     # filtered away when you see them later anyway.
 
-    # FIXME: Algorithm needed here!
-    ...
+    while len(seen) != len(graph.edges):
+        node = heapq.heappop(heap)
+        # Check if goes outside the tree
+        if node.dst not in seen:
+            tree.append(node)
+            seen.add(node.dst)
+        for elm in graph.edges[node.dst]:
+            if elm.dst not in seen:
+                heapq.heappush(heap, elm)
 
     return tree
 
@@ -100,5 +107,5 @@ if __name__ == '__main__':
             Edge(5, 1, 2)
         )
     )
-    # graph.to_dot()
+    graph.to_dot()
     Graph(prim(graph)).to_dot()
